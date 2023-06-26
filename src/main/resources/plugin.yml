@@ -1,0 +1,8 @@
+name: OP2FA
+version: '${version}'
+main: com.teenkung.op2fa.OP2FA
+api-version: 1.19
+prefix: OP2FA
+load: STARTUP
+authors: [Teenkung123]
+description: Adds requirement for admins to use their OP or * permissions!
