@@ -6,3 +6,7 @@ prefix: OP2FA
 load: STARTUP
 authors: [Teenkung123]
 description: Adds requirement for admins to use their OP or * permissions!
+
+commands:
+  auth:
+    description: Authenticate yourself

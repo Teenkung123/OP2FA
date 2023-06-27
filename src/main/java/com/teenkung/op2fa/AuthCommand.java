@@ -7,24 +7,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AuthCommand implements CommandExecutor {
+    @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player player) {
             if (args.length != 0 && !OP2FA.authorizedPlayers.contains(player) && OP2FA.authorizedWaitPlayers.contains(player)) {
-                if (args[0].equals(OP2FA.instance.getConfig().getString("Password"))) {
-                    player.sendMessage(ChatColor.GREEN + "Verify Session Completed!, You can use op now.");
+                if (OP2FA.encryptSHA256(args[0]).equals(OP2FA.instance.getConfig().getString("Password"))) {
+
+                    EventListeners.giveOP(player);
                     OP2FA.authorizedWaitPlayers.remove(player);
                     OP2FA.authorizedPlayers.add(player);
                     OP2FA.permAttachment.remove(player);
                     OP2FA.pendingPermissions.remove(player);
-                    if (OP2FA.pendingPermissions.get(player).equals(Pendings.OPS)) {
-                        player.setOp(true);
-                    } else if (OP2FA.pendingPermissions.get(player).equals(Pendings.PERMISSION)) {
-                        OP2FA.permAttachment.get(player).setPermission("*", true);
-                    } else if (OP2FA.pendingPermissions.get(player).equals(Pendings.BOTH)) {
-                        player.setOp(true);
-                        OP2FA.permAttachment.get(player).setPermission("*", true);
-                    }
+                    player.sendMessage(ChatColor.GREEN + "Verify Session Completed!, You can use op now.");
                 } else {
                     player.sendMessage(ChatColor.RED + "Invalid Password! Please try again");
                 }
